@@ -23,21 +23,21 @@ Bring up the virtual machine for the very first time:
 Follow the steps in http://juniper.github.io/contrail-vnc/README.html and
 make a repo that can be used from the vagrant vm.
 
-   $ curl https://storage.googleapis.com/git-repo-downloads/repo > ./repo && chmod a+x ./repo
+    $ curl https://storage.googleapis.com/git-repo-downloads/repo > ./repo && chmod a+x ./repo
 
-   $ mkdir opencontrail_repo && cd opencontrail_repo ; \
-     ../repo init -u git@github.com:Juniper/contrail-vnc && ../repo sync
+    $ mkdir opencontrail_repo && cd opencontrail_repo ; \
+      ../repo init -u git@github.com:Juniper/contrail-vnc && ../repo sync
 
-   $ cd .. && tar czf opencontrail_repo.tgz opencontrail_repo && rm -rf opencontrail_repo
+    $ cd .. && tar czf opencontrail_repo.tgz opencontrail_repo && rm -rf opencontrail_repo
 
 Restart vagrant box. When its up, it will contain the repo tarball in /vagrant
 
-   $ vagrant reload ; vagrant ssh
+    $ vagrant reload ; vagrant ssh
 
-   [vagrant@localhost ~]$ tar xzf /vagrant/opencontrail_repo.tgz && cd opencontrail_repo
+    [vagrant@localhost ~]$ tar xzf /vagrant/opencontrail_repo.tgz && cd opencontrail_repo
 
 Build opencontrail
 
-   [vagrant@localhost opencontrail_repo]$ python ./third_party/fetch_packages.py ; echo $?   
+    [vagrant@localhost opencontrail_repo]$ python ./third_party/fetch_packages.py ; echo $?   
 
-   [vagrant@localhost opencontrail_repo]$ time scons 2>&1 | tee ~/build.log ; echo $?
+    [vagrant@localhost opencontrail_repo]$ time scons 2>&1 | tee ~/build.log ; echo $?
