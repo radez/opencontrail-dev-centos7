@@ -13,7 +13,7 @@ yum install -y --disablerepo="*" --enablerepo="epel" scons protobuf protobuf-dev
 # install centos packages
 yum install -y git python-lxml wget gcc patch make unzip flex bison gcc-c++ openssl-devel autoconf automake vim python-devel python-setuptools  
 
-# install centos packages that were not neede in centos 6.x, but are needed on centos 7
+# install centos packages that were not needed in centos 6.x, but are needed on centos 7
 yum install -y libtool kernel-devel bzip2 boost-devel tbb-devel libcurl-devel libxml2-devel
 
 echo "***********************************************************"
