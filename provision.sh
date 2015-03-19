@@ -4,7 +4,7 @@ echo "yum update -y -q"
 yum update -y -q
 
 ## install epel repo, but keep it disabled by default
-yum install -y https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+yum install -y epel-release
 sed -i -e 's/enabled=1/enabled=0/' /etc/yum.repos.d/epel.repo
 
 # install packages that are in epel (i.e. not part of centos standard repo)
