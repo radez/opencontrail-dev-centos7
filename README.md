@@ -20,24 +20,23 @@ Bring up the virtual machine for the very first time:
 
     $ vagrant up
 
-Follow the steps in http://juniper.github.io/contrail-vnc/README.html and
-make a repo that can be used from the vagrant vm.
+The provisioning script will reboot the VM once it has prepared the build environment, this is so that the kernel-devel
+package that was installed will match the running kernel. Once the VM has rebooted, fetch the third party packages.
 
-    $ curl https://storage.googleapis.com/git-repo-downloads/repo > ./repo && chmod a+x ./repo
+    $ vagrant ssh
+    [vagrant@localhost ~]$ pushd opencontrail_repo                                                         
+    [vagrant@localhost ~]$ python ./third_party/fetch_packages.py                                          
 
-    $ mkdir opencontrail_repo && cd opencontrail_repo ; \
-      ../repo init -u git@github.com:Juniper/contrail-vnc && ../repo sync
+Finally either build and generate RPMs or build without generating RPMs:
 
-    $ cd .. && tar czf opencontrail_repo.tgz opencontrail_repo && rm -rf opencontrail_repo
+    [vagrant@localhost ~]$ time scons 2>&1 | tee ~/build.log
+    or
+    [vagrant@localhost ~]$ rpmbuild -ba tools/packages/rpm/contrail/contrail.spec --define "_sbtop $(pwd)" --define "_kVers $(uname -r)" | tee contrail-rpmbuild.log
 
-Restart vagrant box. When its up, it will contain the repo tarball in /vagrant
 
-    $ vagrant reload ; vagrant ssh
 
-    [vagrant@localhost ~]$ tar xzf /vagrant/opencontrail_repo.tgz && cd opencontrail_repo
+Copy RPMs from build server if you generated them. Get the ssh-config from vagrant then use the config to scp the files:
 
-Build opencontrail
-
-    [vagrant@localhost opencontrail_repo]$ python ./third_party/fetch_packages.py ; echo $?   
-
-    [vagrant@localhost opencontrail_repo]$ time scons 2>&1 | tee ~/build.log ; echo $?
+    $ vagrant ssh-config
+    $ scp -r -i <vagrant-identity-file> vagrant@<vagrant-hostname>:/home/vagrant/rpmbuild/RPMS .
+    $ scp -r -i <vagrant-identity-file> vagrant@<vagrant-hostname>:/home/vagrant/rpmbuild/SRPMS .

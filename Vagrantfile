@@ -11,9 +11,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   ## private_net_ip = "192.168.50.17"
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box"
+  config.vm.box = "centos/7"
+  # An alternative vmware based image:
+  # config.vm.box = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box"
   config.vm.provider "vmware_fusion" do |v, override|
       override.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/vmware/opscode_centos-7.0_chef-provisionerless.box"
+  end
+
+  config.vm.provider :libvirt do |v|
+    v.memory = 8096
+    v.cpus = 2
   end
 
   config.vm.provider "virtualbox" do |v|
@@ -24,7 +31,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vf.vmx["numvcpus"] = "2"
       vf.vmx["memsize"] = "8096"
   end
-  config.vm.provision "shell", path: "provision.sh"
+  config.vm.provision "shell", path: "provision.sh", privileged: false
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
